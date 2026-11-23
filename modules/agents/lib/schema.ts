@@ -3,7 +3,7 @@ export type BuilderDefinition = Record<string, unknown>;
 export type SaveAgentInput = {
   name: string;
   description: string;
-  draftDefinition: unknown;
+  draftDefinition: BuilderDefinition;
   canvas: unknown;
 };
 

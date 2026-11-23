@@ -3,13 +3,18 @@
 import { prisma } from "@/lib/db";
 import type { Prisma } from "@/lib/generated/prisma/client";
 import { requireAuth } from "@/modules/auth/actions";
-import { migrateV1ToV2 } from "@/modules/agents/lib/migrate";
+import { migrateV1ToV2 } from "@/modules/workflows/lib/migrate-v1";
 import { getTemplate } from "@/modules/agents/lib/templates";
 import {
   builderDefinitionSchema,
-  defaultDefinition,
-  type SaveAgentInput,
-} from "@/modules/agents/lib/schema";
+  defaultBuilderDefinition,
+  type BuilderDefinition,
+} from "@/modules/workflows/lib/schema";
+import { defaultDefinition } from "@/modules/agents/lib/definition";
+import type { SaveAgentInput } from "@/modules/agents/lib/schema";
+
+
+
 
 export async function listAgents() {
     const user  = await requireAuth();
