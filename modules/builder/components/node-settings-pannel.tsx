@@ -4,7 +4,8 @@ import { CustomToolSettings } from "@/modules/builder/components/custom-tool-set
 import { GithubSettings } from "@/modules/builder/components/github-settings";
 import type { GithubConfig } from "@/modules/agents/lib/definition";
 import { isCustomToolConfig } from "@/modules/builder/lib/custom-tools";
-import { popularGptModels } from "@/modules/builder/lib/models";
+import { defaultModelId, popularGeminiModels } from "@/modules/builder/lib/models";
+// import { popularGptModels } from "@/modules/builder/lib/models";
 import { getToolLabel } from "@/modules/builder/lib/tools-catalog";
 import { useCanvasStore } from "@/modules/builder/store/canvas-store";
 import { Button } from "@/components/ui/button";
@@ -85,7 +86,7 @@ export function NodeSettingsPanel() {
       repo: "",
       defaultPrNumber: "",
     };
-    const modelId = (selectedNode.data.modelId as string) ?? "gpt-4o-mini";
+    const modelId = (selectedNode.data.modelId as string) ?? defaultModelId;
     const tools = (selectedNode.data.tools as ToolEntry[]) ?? [];
 
     return (
@@ -116,11 +117,11 @@ export function NodeSettingsPanel() {
           <Input
             id="model"
             value={modelId}
-            placeholder="gpt-4o-mini"
+            placeholder={defaultModelId}
             onChange={(e) => updateNodeData(selectedNode.id, { modelId: e.target.value })}
           />
           <div className="flex flex-wrap gap-1.5">
-            {popularGptModels.map((model) => (
+            {popularGeminiModels.map((model) => (
               <Button
                 key={model}
                 type="button"

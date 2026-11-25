@@ -1,4 +1,5 @@
 import type { Edge, Node } from "@xyflow/react";
+import { defaultModelId } from "@/modules/builder/lib/models";
 import type { BuilderDefinition } from "@/modules/workflows/lib/schema";
 import { defaultBuilderDefinition } from "@/modules/workflows/lib/schema";
 import {
@@ -137,7 +138,10 @@ export function canvasToBuilderDefinition(
       defaultConfig?.instructions ??
       "You are a helpful assistant.",
     modelId:
-      (agentFlowNode?.data.modelId as string) ?? defaultConfig?.modelId ?? "gpt-4o-mini",
+      (agentFlowNode?.data.modelId as string) ??
+      defaultConfig?.modelId ??
+      // "gpt-4o-mini",
+      defaultModelId,
     tools: (agentFlowNode?.data.tools as { toolId: string; config: Record<string, unknown> }[]) ??
       defaultConfig?.tools ??
       [],

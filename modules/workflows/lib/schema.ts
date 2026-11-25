@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { defaultModelId } from "@/modules/builder/lib/models";
 
 export const toolConfigSchema = z.object({
   toolId: z.string(),
@@ -75,7 +76,8 @@ export function defaultBuilderDefinition(
   const agentConfig: AgentNodeConfig = {
     label: partial?.label ?? "Main agent",
     instructions: partial?.instructions ?? "You are a helpful assistant.",
-    modelId: partial?.modelId ?? "gpt-4o-mini",
+    // modelId: partial?.modelId ?? "gpt-4o-mini",
+    modelId: partial?.modelId ?? defaultModelId,
     tools: partial?.tools ?? [],
     github: partial?.github ?? { owner: "", repo: "", defaultPrNumber: "" },
   };

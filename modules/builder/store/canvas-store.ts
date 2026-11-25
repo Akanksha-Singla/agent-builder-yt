@@ -2,13 +2,11 @@
 
 import {
   addEdge,
-  applyEdgeChanges,
-  applyNodeChanges,
+  EdgeChangeset,
+  NodeChangeset,
   type Connection,
   type Edge,
-  type EdgeChange,
   type Node,
-  type NodeChange,
 } from "@xyflow/react";
 import { create } from "zustand";
 import type { BuilderDefinition } from "@/modules/workflows/lib/schema";
@@ -31,8 +29,8 @@ type CanvasStore = {
   limits: BuilderDefinition["limits"];
   isDirty: boolean;
   init: (draftDefinition: unknown, canvas: unknown) => void;
-  onNodesChange: (changes: NodeChange[]) => void;
-  onEdgesChange: (changes: EdgeChange[]) => void;
+  onNodesChange: (changes: NodeChangeset) => void;
+  onEdgesChange: (changes: EdgeChangeset) => void;
   onConnect: (connection: Connection) => void;
   selectNode: (nodeId: string | null) => void;
   selectTool: (index: number | null) => void;
@@ -99,23 +97,27 @@ export const useCanvasStore = create<CanvasStore>((set, get) => ({
   },
 
   onNodesChange(changes) {
-    const filtered = changes.filter((change) => {
-      if (change.type !== "remove") return true;
-      const node = get().nodes.find((n) => n.id === change.id);
-      return node?.type !== "start" && node?.type !== "agent" && node?.type !== "end";
-    });
+    const filtered = new NodeChangeset(
+      changes.toArray().filter((change) => {
+        if (change.type !== "remove") return true;
+        const node = get().nodes.find((n) => n.id === change.id);
+        return node?.type !== "start" && node?.type !== "agent" && node?.type !== "end";
+      })
+    );
 
     set({
-      nodes: applyNodeChanges(filtered, get().nodes),
+      nodes: filtered.applyTo(get().nodes),
       // React Flow also sends "select" and "dimensions" changes, which are not real edits.
-      isDirty: get().isDirty || filtered.some((c) => c.type === "position" || c.type === "remove"),
+      isDirty:
+        get().isDirty ||
+        filtered.toArray().some((c) => c.type === "position" || c.type === "remove"),
     });
   },
 
   onEdgesChange(changes) {
     set({
-      edges: applyEdgeChanges(changes, get().edges),
-      isDirty: get().isDirty || changes.some((c) => c.type === "remove"),
+      edges: changes.applyTo(get().edges),
+      isDirty: get().isDirty || changes.toArray().some((c) => c.type === "remove"),
     });
   },
 
