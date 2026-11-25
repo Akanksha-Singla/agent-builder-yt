@@ -1,13 +1,6 @@
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { ModeToggle } from "@/components/ui/mode-toggle";
+import { redirect } from "next/navigation";
 
+// The app lives under /agents. Not signed in? The dashboard layout sends you to /login.
 export default function Home() {
-  return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-     <Button>Click me</Button>
-     <ModeToggle/>
-    </div>
-  );
+  redirect("/agents");
 }
-  

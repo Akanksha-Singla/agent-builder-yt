@@ -1,4 +1,4 @@
-// import { Logo } from "@/components/logo";
+import { Logo } from "@/components/logo";
 import { requireUnauth } from "@/modules/auth/actions";
 import { SignInForm } from "@/modules/auth/components/sing-in-form";
 import {
@@ -17,7 +17,7 @@ export default async function SignInPage() {
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
           <div className="mb-2 flex justify-center">
-            {/* <Logo showLabel={ } href="/login" /> */}
+            <Logo showLabel={false} href="/login" />
           </div>
           <CardTitle>Welcome back</CardTitle>
           <CardDescription>Sign in to continue to Agent Builder</CardDescription>
